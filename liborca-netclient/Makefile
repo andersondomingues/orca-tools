@@ -5,7 +5,7 @@ SRCDIR = src
 BINDIR = bin
 INCDIR = include
 
-CXX := gcc
+CXX := g++
 CXXFLAGS := -O3 -g -Wall -Wextra -Werror -I$(INCDIR) -std=c++17
 
 TARGET_DEPS = \

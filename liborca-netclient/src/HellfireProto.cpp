@@ -18,11 +18,12 @@ uint32_t Orca::NetClient::HellfireProto::Send(char* data, int size,
 		
 	//generate header
 	char* msg = new char[HELLFIRE_MAX_MSG_BYTES];
+
 	msg[1] = 0x00;  //src_cpu
 	msg[2] = 0x00;  
 
 	msg[3] = 0xe8;	//src_port (5000) ----- task
-	msg[4] = 0x03;  
+	msg[4] = 0x03;
 
 	msg[5] = (target_port & 0x000000FF);  //target port
 	msg[6] = (target_port >> 8) & 0x000000FF;
@@ -55,7 +56,7 @@ uint32_t Orca::NetClient::HellfireProto::Send(char* data, int size,
 		int offset = i * NOC_PAYLOAD_SIZE_BYTES;
 		
 		//copy next 102 bytes
-		hf_end_data_copy(&(msg[16]), (char*)&(buf[offset]), NOC_PAYLOAD_SIZE_BYTES);
+		hf_end_data_copy(&(msg[16]), (char*)&(data[offset]), NOC_PAYLOAD_SIZE_BYTES);
 		
 		//adjust sequence number (zero recvs ok)
 		msg[10] = i + 1;
@@ -101,7 +102,7 @@ void hf_hexdump(char* _mem, uint32_t base, uint32_t length){
 
 //treat endianess for the payload
 //TODO: maybe we can treat the endiness for the whole packet
-void hf_end_data_copy(char* target, char* source, size_t bytes){
+void Orca::NetClient::HellfireProto::hf_end_data_copy(char* target, char* source, size_t bytes){
 	
 	for(uint i = 0; i < bytes; i+=2){
 			target[i] = source[i+1];
@@ -109,12 +110,12 @@ void hf_end_data_copy(char* target, char* source, size_t bytes){
 	}
 }
 
-
 uint32_t Orca::NetClient::HellfireProto::Recv(char* data,
 	int* size, int* source_cpu, int* source_port, int* channel){
 	
-	uint16_t seq = 0, packet = 0, packets = 0;
-	
+	//uint16_t seq = 0, packet = 0, packets = 0;
+	uint16_t packets = 0, packet = 0;
+
 	//recv from udp
 	uint16_t x, y;
 
@@ -125,7 +126,6 @@ uint32_t Orca::NetClient::HellfireProto::Recv(char* data,
 		//copy next 102 bytes
 		hf_end_data_copy((char*)data, (char*)data, UDP_MAX_MESSAGE_SIZE);
 
-		
 		uint16_t* bbuf = (uint16_t*)data;
 
 		*source_cpu = bbuf[PKT_SOURCE_CPU];
@@ -156,7 +156,7 @@ uint32_t Orca::NetClient::HellfireProto::Recv(char* data,
 		memcpy(data, &(data[16]), *size);
 	}
 
-	return res;
+	return res + packets;
 }
 
 

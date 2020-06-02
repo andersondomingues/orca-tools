@@ -28,6 +28,7 @@
 
 #include <cstring>
 #include <iostream>
+#include <HermesProto.h>
 
 //as defined for orca (see hermes noc documentation)
 #define FLIT_SIZE 2
@@ -78,6 +79,8 @@ public:
 
 	uint32_t Send(char* data, int size, int target_cpu, int target_port, int target_channel);
 	uint32_t Recv(char* data, int* size, int* src_cpu, int* src_port, int* channel);
+
+	void hf_end_data_copy(char* target, char* source, size_t bytes);
 
 }; //end of class
 
