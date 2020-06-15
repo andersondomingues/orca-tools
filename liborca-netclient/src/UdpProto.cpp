@@ -24,6 +24,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 ******************************************************************************/
 #include <UdpProto.h>
+#include <Utils.h>
 #include <iostream>
 
 Orca::NetClient::UdpProto::UdpProto(int port){
@@ -77,6 +78,8 @@ uint32_t Orca::NetClient::UdpProto::Send(char* data, int length, std::string add
     destination.sin_port = htons(port);
     destination.sin_addr.s_addr = inet_addr(addr.c_str());
     destination.sin_family = AF_INET;
+
+    Orca::NetClient::Utils::HexDump((int8_t*)data, length);
 
     //send data using sockets
     return sendto(socket_fd, data, length, 0, 

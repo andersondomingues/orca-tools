@@ -62,7 +62,8 @@ uint32_t Orca::NetClient::HellfireProto::Send(char* data, int size,
 		msg[10] = i + 1;
 		
 		//send message chunk
-		_hermes->Send(x, y, data, NOC_PACKET_SIZE_BYTES - 2);
+		//_hermes->Send(x, y, data, NOC_PACKET_SIZE_BYTES - 2);
+		_hermes->Send(x, y, data, size + 32);
 	}
 
 	return 0; //TODO: implement error messages

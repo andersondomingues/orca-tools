@@ -11,7 +11,8 @@ CXXFLAGS := -O3 -g -Wall -Wextra -Werror -I$(INCDIR) -std=c++17
 TARGET_DEPS = \
 	$(BINDIR)/UdpProto.o \
 	$(BINDIR)/HermesProto.o \
-	$(BINDIR)/HellfireProto.o
+	$(BINDIR)/HellfireProto.o \
+	$(BINDIR)/Utils.o
 
 #compile all classes (.cpp) into %.o files
 $(BINDIR)/%.o: $(SRCDIR)/%.cpp $(INCDIR)/%.h 
