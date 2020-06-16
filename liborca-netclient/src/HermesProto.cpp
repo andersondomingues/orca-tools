@@ -45,13 +45,12 @@ uint32_t Orca::NetClient::HermesProto::Recv(uint16_t* x, uint16_t* y, char* data
 
 	int res = _udp_proto->Recv(data, size, &dummy_addr, &dummy_port);
 
-	if(!res){
+	if(res){
 		*x = ((uint16_t*)data)[0] >> 4;
 		*y = ((uint16_t*)data)[0] & 0x00FF;
 	}
 
 	return res;
-
 }
 
 uint32_t Orca::NetClient::HermesProto::Send(uint16_t x, uint16_t y, char* data, uint16_t size){
